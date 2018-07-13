@@ -1,0 +1,21 @@
+{
+  "name": "relax2focus",
+  "version": "1.0.0",
+  "description": "A clone project from Focusmusic.fm",
+  "author": "Igor Souza Martins",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.0.0",
+    "nuxt": "^1.0.0",
+    "vue-resource": "^1.5.1"
+  },
+  "devDependencies": {
+    "cross-env": "^5.0.1"
+  }
+}
