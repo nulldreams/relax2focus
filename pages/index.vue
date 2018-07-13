@@ -1,5 +1,6 @@
 <template>
   <div class="principal">
+    <vue-loader v-if="loading" direction="bottom-right" image="http://www.wellnessexpome.com/wp-content/uploads/2018/06/pre-loader.gif" text="Focusing song..." text-color="#786fa6" />
     <div v-if="channel" class="overlay" @click="channel = false">
       <div class="content">
         <div class="channels">
@@ -10,6 +11,17 @@
         </div>
       </div>
     </div>
+    <div v-if="trackinfo" class="overlay" @click="trackinfo = false">
+      <div class="content">
+        <div class="trackinfo">
+          <p class="title">{{$store.state.track.title}}</p>
+          <p class="artist">{{$store.state.track.artist}}</p>
+          <div v-if="$store.state.track.permalink" class="href">
+            <a :href="$store.state.track.permalink" target="new_blank()" class="href">see the artist page</a>
+          </div>
+        </div>
+      </div>
+    </div>    
     <div class="player">
       <div class="options">
         <div class="left" @click="previousSong()">
@@ -25,18 +37,69 @@
             <i data-feather="skip-forward"></i>
         </div>
       </div>
-      <div class="channels" @click="channel = true">
-        <p style="cursor: pointer;">channels</p>
+      <div class="bonus">
+        <p style="cursor: pointer;" @click="channel = true">channels</p>
+        <span class="volume">
+          <div @click="volumeDecrease()" class="decrease">
+            <i data-feather="volume-1"></i>
+          </div>
+          <div @click="volumeIncrease()" class="increase">
+            <i data-feather="volume-2"></i>
+          </div>
+        </span>
+        <p style="cursor: pointer;" @click="trackinfo = true">track info</p>
       </div>
     </div>
   </div>
 </template>
 <style>
+  @import url('https://fonts.googleapis.com/css?family=Muli');
+
+  p, a {
+    font-family: 'Muli', sans-serif;
+  }
+  a {
+    text-decoration: none;
+    color: #fff;
+  }
+
   .principal .overlay .content {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
+  }
+  .principal .overlay .content .trackinfo {
+    width: 400px;
+    color: #fff;
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+  .principal .overlay .content .trackinfo p {
+    margin: 5px;
+  }
+  .principal .overlay .content .trackinfo .href {
+    background: #a29bfe;
+    width: 60%;
+    height: 40px;
+    border-radius: .30em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin-top: 10px; */
+  }
+  .principal .overlay .content .trackinfo .title {
+    font-size: 20px;
+  }
+  .principal .overlay .content .trackinfo .artist {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  .principal .overlay .content .trackinfo .feather {
+    stroke: #fff;
   }
   .principal .overlay .content .channels {
     width: 300px;
@@ -95,6 +158,24 @@
     align-items: center;
     height: 100%;
   }
+  .principal .player .bonus {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 250px;
+  }
+  .principal .player .bonus .volume {
+    display: flex;
+    flex-direction: row;
+  }
+  .principal .player .bonus .feather {
+    stroke: #777;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
   .principal .player .options .left {
     height: 80px;
     width: 80px;
@@ -137,7 +218,12 @@
   }
 </style>
 <script>
+import vueLoader from '~/node_modules/@nulldreams/vue-loading/src/vue-loading'
+
 export default {
+  components: {
+    vueLoader
+  },
   head () {
     return {
       title: 'Relax to focus',
@@ -175,9 +261,9 @@ export default {
       play: false,
       pause: false,
       audio: undefined,
-      track: undefined,
-      duration: 0,
+      loading: false,
       channel: false,
+      trackinfo: false,
       channels: [
         'electronic',
         'downtempo',
@@ -230,6 +316,12 @@ export default {
     setChannel (i) {
       this.$store.commit('setChannel', this.channels[i])
       this.$store.commit('nextTrack', { index: this.$store.state.trackIndex, channel: this.$store.state.channel })
+    },
+    volumeIncrease () {
+      this.audio.volume = this.audio.volume + 0.2
+    },
+    volumeDecrease () {
+      this.audio.volume = this.audio.volume - 0.2
     }
   },
   watch: {
