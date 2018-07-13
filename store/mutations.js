@@ -8,8 +8,8 @@ const mutations = {
     state.audio.load(track)
     state.audio.play()
   },
-  firstTrack: function (state) {
-    api.default.loadTrack((err, track) => {
+  firstTrack: function (state, channel) {
+    api.default.loadTrack(channel, (err, track) => {
       state.track = track
     })
   },

@@ -14,7 +14,7 @@ module.exports = {
       { hid: 'description', name: 'description', content: pkg.description }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
     ],
     script: [
       { src: 'https://code.jquery.com/jquery-3.3.1.min.js' },
@@ -59,12 +59,6 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    babel: {
-      plugins: [
-        'transform-async-to-generator',
-        'transform-runtime'
-      ]
-    },
     /*
     ** You can extend webpack config here
     */

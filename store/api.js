@@ -5,8 +5,8 @@ let url = {
 }
 
 const methods = {
-    loadTrack: function (cb) {
-        Vue.http.get(`${url.prod}/tracks/?offset=1&timestamp=1531438026840&channel=rain`).then(response => {
+    loadTrack: function (channel, cb) {
+        Vue.http.get(`${url.prod}/tracks/?offset=1&timestamp=1531438026840&channel=${channel}`).then(response => {
             let track = response.body
 
             return cb(null, track)

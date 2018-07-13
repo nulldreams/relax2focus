@@ -138,6 +138,38 @@
 </style>
 <script>
 export default {
+  head () {
+    return {
+      title: 'Relax to focus',
+      meta: [
+        {
+          hid: `description`,
+          name: 'description',
+          content: 'Focus with songs for work, productivity and flow.'
+        },
+        {
+          hid: `keywords`,
+          name: 'keywords',
+          keywords: 'Relax to Focus'
+        },
+        {
+          hid: `og:title`,
+          property: 'og:title',
+          content: `Relax to focus`
+        },
+        {
+          hid: `og:image`,
+          property: 'og:image',
+          content: '/cover.png'
+        },
+        {
+          hid: `og:description`,
+          property: 'og:description',
+          content: 'Focus with songs for work, productivity and flow.'
+        }
+      ]
+    }
+  },
   data () {
     return {
       play: false,
@@ -157,7 +189,7 @@ export default {
   created() {
     if (process.browser) {
       this.audio = new Audio('')
-      this.$store.commit('firstTrack')
+      this.$store.commit('setChannel', this.channels[2])
 
       $(function () {
         feather.replace()
@@ -180,6 +212,8 @@ export default {
         }
         this.pause = true
         this.play = false
+      } else {
+          this.$store.commit('firstTrack', this.$store.state.channel)
       }
     },
     pauseSong () {

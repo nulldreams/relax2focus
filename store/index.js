@@ -5,8 +5,8 @@ const createStore = () => {
   return new Vuex.Store({
     state: {
       counter: 0,
-      track: '',
-      channel: 'rain',
+      track: { url: '' },
+      channel: '',
       trackIndex: 1
     },
     mutations
