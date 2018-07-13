@@ -13,7 +13,9 @@
   "dependencies": {
     "@nulldreams/vue-loading": "0.0.1",
     "@nuxtjs/axios": "^5.0.0",
+    "@nuxtjs/google-analytics": "^2.0.2",
     "nuxt": "^1.0.0",
+    "vue-analytics": "^5.12.2",
     "vue-resource": "^1.5.1"
   },
   "devDependencies": {

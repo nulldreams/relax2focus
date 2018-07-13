@@ -7,7 +7,7 @@ const createStore = () => {
       counter: 0,
       track: { url: '' },
       channel: '',
-      trackIndex: 1
+      trackIndex: 0
     },
     mutations
   })

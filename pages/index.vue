@@ -8,6 +8,7 @@
           <div class="channel" @click="setChannel(1)">downtempo</div>
           <div class="channel" @click="setChannel(2)">classical</div>
           <div class="channel" @click="setChannel(3)">rain</div>
+          <div class="channel" @click="setChannel(4)">minecraft soundtrack</div>
         </div>
       </div>
     </div>
@@ -268,7 +269,8 @@ export default {
         'electronic',
         'downtempo',
         'classical',
-        'rain'
+        'rain',
+        'minecraft'
       ]
     }
   },
