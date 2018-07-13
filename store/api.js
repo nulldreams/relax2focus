@@ -16,7 +16,8 @@ const methods = {
         })
     },
     nextTrack: function ({ index, channel }, cb) {
-        Vue.http.get(`${url.prod}/tracks/?offset=${index++}&timestamp=1531438026840&channel=${channel}`).then(response => {
+        console.log(index + 1)
+        Vue.http.get(`${url.prod}/tracks/?offset=${index + 1}&timestamp=1531438026840&channel=${channel}`).then(response => {
             let track = response.body
 
             return cb(null, track)
@@ -26,7 +27,7 @@ const methods = {
         })
     },
     previousTrack: function ({ index, channel }, cb) {
-        Vue.http.get(`${url.prod}/tracks/?offset=${index--}&timestamp=1531438026840&channel=${channel}`).then(response => {
+        Vue.http.get(`${url.prod}/tracks/?offset=${index - 1}&timestamp=1531438026840&channel=${channel}`).then(response => {
             let track = response.body
 
             return cb(null, track)

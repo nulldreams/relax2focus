@@ -50,6 +50,8 @@
         </span>
         <p style="cursor: pointer;" @click="trackinfo = true">track info</p>
       </div>
+    <!-- {{ $store.state.track }}
+    {{ $store.state.trackIndex }} -->
     </div>
   </div>
 </template>
@@ -285,8 +287,15 @@ export default {
     }
   },
   methods: {
-    playSong (track) {
+    playSong (track, alterou) {
       if (track) {
+        this.loading = true
+        if (this.play && alterou) {
+          this.audio.src = track
+          this.play = false
+          this.pause = true
+          return this.audio.play()
+        }
         if (this.play) {
           this.play = false
           this.pause = true
@@ -313,7 +322,9 @@ export default {
       this.$store.commit('nextTrack', { index: this.$store.state.trackIndex, channel: this.$store.state.channel })
     },
     async previousSong () {
-      this.$store.commit('previousTrack', { index: this.$store.state.trackIndex, channel: this.$store.state.channel })
+      if (this.$store.state.trackIndex > 0) {
+        this.$store.commit('previousTrack', { index: this.$store.state.trackIndex, channel: this.$store.state.channel })
+      }
     },
     setChannel (i) {
       this.$store.commit('setChannel', this.channels[i])
@@ -328,7 +339,8 @@ export default {
   },
   watch: {
     '$store.state.track'(v) {
-      this.playSong(v.url)
+      this.playSong(v.url, true)
+      this.loading = false
     }
   }
 }
