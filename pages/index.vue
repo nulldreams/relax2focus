@@ -378,7 +378,7 @@ export default {
         {
           hid: `twitter:card`,
           property: 'twitter:card',
-          content: 'summary'
+          content: 'summary_large_image'
         },
         {
           hid: `twitter:site`,
