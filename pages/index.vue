@@ -366,6 +366,11 @@ export default {
           content: '/cover.png'
         },
         {
+          hid: `twitter:image`,
+          property: 'twitter:image',
+          content: '/cover.png'
+        },
+        {
           hid: `og:description`,
           property: 'og:description',
           content: 'Focus with songs for work, productivity and flow.'
