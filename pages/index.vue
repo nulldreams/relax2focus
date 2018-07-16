@@ -1,6 +1,32 @@
 <template>
   <div class="principal">
-    <vue-loader v-if="loading" direction="bottom-right" image="http://www.wellnessexpome.com/wp-content/uploads/2018/06/pre-loader.gif" text="Focusing song..." text-color="#786fa6" />
+    <vue-loader v-if="loading" direction="bottom-right" image="http://www.wellnessexpome.com/wp-content/uploads/2018/06/pre-loader.gif" :text="loadingMessage" text-color="#786fa6" />
+    <!-- <feedback /> -->
+    <div v-if="feedback" class="overlay">
+      <div class="content">
+        <div class="feedback">
+          <div v-if="feedbackResponse" class="response animated rubberBand">
+            <p>❤</p>         
+            <p>{{feedbackResponse}}</p>
+          </div>
+          <div class="form" v-if="!feedbackResponse">
+            <div class="name">
+              <input type="text" name="" v-model="feedbackData.name" id="" placeholder="name">
+            </div>
+            <div class="contact">
+              <input type="text" name="" v-model="feedbackData.contact" id="" placeholder="email or github">
+            </div>
+            <div class="message">
+              <textarea name="" id="" v-model="feedbackData.message" cols="30" rows="10" placeholder="message"></textarea>
+            </div>
+            <div class="send">
+              <a @click="sendFeedback()">Send 🚀</a>
+              <a @click="feedback = false"> exit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div v-if="channel" class="overlay" @click="channel = false">
       <div class="content">
         <div class="channels">
@@ -22,7 +48,7 @@
           </div>
         </div>
       </div>
-    </div>    
+    </div>
     <div class="player">
       <div class="options">
         <div class="left" @click="previousSong()">
@@ -49,9 +75,8 @@
           </div>
         </span>
         <p style="cursor: pointer;" @click="trackinfo = true">track info</p>
+        <p style="cursor: pointer;" @click="feedback = true">feedback/sugestions</p>
       </div>
-    <!-- {{ $store.state.track }}
-    {{ $store.state.trackIndex }} -->
     </div>
   </div>
 </template>
@@ -103,6 +128,85 @@
   }
   .principal .overlay .content .trackinfo .feather {
     stroke: #fff;
+  }
+  .principal .overlay .content .feedback {
+    background: rgba(25, 25, 25, .8);
+    height: 350px;
+    width: 400px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: .30em;
+  }
+  .principal .overlay .content .feedback .response {
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    font-size: 17px;
+  }
+  .principal .overlay .content .feedback .form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: row;
+    padding: 5px;
+  }
+  .principal .overlay .content .feedback .form > .name, .principal .overlay .content .feedback .form > .contact {
+    width: 45%;
+    height: 50px;
+  }
+  .principal .overlay .content .feedback .form > .name {
+    margin-right: 10px;
+  }
+  .principal .overlay .content .feedback .form > .contact {
+    margin-left: 10px;
+  }
+  .principal .overlay .content .feedback .form > .message {
+    width: 100%;
+    padding: 10px;
+  }
+  .principal .overlay .content .feedback .form > .send {
+    width: 100%;
+    padding: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .principal .overlay .content .feedback .form .send a:first-child {
+    background: #a29bfe;
+    width: 80%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: .30em;
+    border-bottom-left-radius: .30em;
+    cursor: pointer;
+  }
+  .principal .overlay .content .feedback .form .send a:last-child {
+    background: #ff7675;
+    width: 20%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-right-radius: .30em;
+    border-bottom-right-radius: .30em;
+    cursor: pointer;
+  }
+  .principal .overlay .content input, .principal .overlay .content textarea {
+    background: rgba(25, 25, 25, 1.0);
+    border: none;
+    color: #fff;
+    padding: 10px;
+    outline: none;
+    border-radius: .50em;
+    width: 100%;
+    resize: none;
+    font-family: 'Muli', sans-serif;
   }
   .principal .overlay .content .channels {
     width: 300px;
@@ -164,10 +268,15 @@
   .principal .player .bonus {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 
+    flex-wrap: wrap;
+
     width: 250px;
+  }
+  .principal .player .bonus p {
+    margin: 10px;
   }
   .principal .player .bonus .volume {
     display: flex;
@@ -219,13 +328,18 @@
     width: 30px;
     height: 30px;
   }
+  .principal .loading-box {
+    z-index: 11;
+  }
 </style>
 <script>
+import feedback from '@/components/feedback'
 import vueLoader from '~/node_modules/@nulldreams/vue-loading/src/vue-loading'
 
 export default {
   components: {
-    vueLoader
+    vueLoader,
+    feedback
   },
   head () {
     return {
@@ -267,6 +381,14 @@ export default {
       loading: false,
       channel: false,
       trackinfo: false,
+      feedback: false,
+      loadingMessage: 'Focusing song...',
+      feedbackResponse: undefined,
+      feedbackData: {
+        name: '',
+        contact: '',
+        message: ''
+      },
       channels: [
         'electronic',
         'downtempo',
@@ -335,6 +457,32 @@ export default {
     },
     volumeDecrease () {
       this.audio.volume = this.audio.volume - 0.2
+    },
+    sendFeedback () {
+      if (this.feedbackData.name && this.feedbackData.contact && this.feedbackData.message) {
+        if (this.feedbackData.contact.indexOf('@') === -1) {
+          this.feedbackData.contact = `@${this.feedbackData.contact}`
+        }
+
+        this.loadingMessage = 'Sending...'
+        this.loading = true
+        this.$http.post(`https://relax2focus.herokuapp.com/feedback`, this.feedbackData).then(response => {
+          this.feedbackResponse = response.body.message
+          this.loading = false
+          setTimeout(() => {
+          this.feedbackResponse = undefined
+          this.feedback = false
+          }, 3000);
+        },
+        response => {
+            console.log(response);
+        })
+      } else {
+        this.feedbackResponse = 'please, fill the fields'
+        setTimeout(() => {
+        this.feedbackResponse = undefined
+        }, 3000);
+      }
     }
   },
   watch: {
