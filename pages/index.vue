@@ -363,12 +363,12 @@ export default {
         {
           hid: `og:image`,
           property: 'og:image',
-          content: '/cover.png'
+          content: 'https://relax2focus.netlify.com/cover.png'
         },
         {
           hid: `twitter:image`,
           property: 'twitter:image',
-          content: '/cover.png'
+          content: 'https://relax2focus.netlify.com/cover.png'
         },
         {
           hid: `og:description`,
