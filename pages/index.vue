@@ -369,6 +369,26 @@ export default {
           hid: `og:description`,
           property: 'og:description',
           content: 'Focus with songs for work, productivity and flow.'
+        },
+        {
+          hid: `twitter:card`,
+          property: 'twitter:card',
+          content: 'summary'
+        },
+        {
+          hid: `twitter:site`,
+          property: 'twitter:site',
+          content: '@nulldreams'
+        },
+        {
+          hid: `twitter:creator`,
+          property: 'twitter:creator',
+          content: '@nulldreams'
+        },
+        {
+          hid: `og:url`,
+          property: 'og:url',
+          content: 'https://relax2focus.netlify.com/'
         }
       ]
     }
