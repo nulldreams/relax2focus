@@ -346,6 +346,11 @@ export default {
       title: 'Relax to focus',
       meta: [
         {
+          hid: 'google-site-verification',
+          name: 'google-site-verification',
+          content: 'Dr7OsNQBXFxgYpD-csUIWGb4IEVjwpwEnWBjwcVn_Zo'
+        },
+        {
           hid: `description`,
           name: 'description',
           content: 'Focus with songs for work, productivity and flow.'
